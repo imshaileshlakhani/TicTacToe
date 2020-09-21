@@ -5,14 +5,17 @@
         android:tooltipText="About us"
         android:title="About Us"/>
     <item
+        android:id="@+id/resetgame"
+        android:title="Restart"/>
+    <item
         android:id="@+id/reset"
         android:title="Reset Score"/>
     <item
-        android:id="@+id/resetgame"
-        android:title="Reset Game"/>
-    <item
         android:id="@+id/Change"
         android:title="Reset Name"/>
+    <item
+        android:id="@+id/share"
+        android:title="Share apk"/>
     <item
         android:id="@+id/exit"
         android:title="Exit"/>

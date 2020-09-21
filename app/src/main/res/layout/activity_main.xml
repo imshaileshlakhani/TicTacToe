@@ -36,18 +36,27 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/draw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_weight="1">
 
         <Button
             android:id="@+id/button_00"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="0"
             android:textSize="100sp" />
 
@@ -55,8 +64,8 @@
             android:id="@+id/button_01"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="1"
             android:textSize="100sp" />
 
@@ -64,8 +73,8 @@
             android:id="@+id/button_02"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="2"
             android:textSize="100sp" />
 
@@ -80,8 +89,8 @@
             android:id="@+id/button_10"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="3"
             android:textSize="100sp" />
 
@@ -89,8 +98,8 @@
             android:id="@+id/button_11"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="4"
             android:textSize="100sp" />
 
@@ -98,8 +107,8 @@
             android:id="@+id/button_12"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="5"
             android:textSize="100sp" />
     </LinearLayout>
@@ -114,8 +123,8 @@
             android:id="@+id/button_20"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="6"
             android:textSize="100sp" />
 
@@ -123,8 +132,8 @@
             android:id="@+id/button_21"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="7"
             android:textSize="100sp" />
 
@@ -132,8 +141,8 @@
             android:id="@+id/button_22"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:tag="8"
             android:textSize="100sp" />
     </LinearLayout>

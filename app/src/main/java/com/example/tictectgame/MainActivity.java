@@ -6,10 +6,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ApplicationExitInfo;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,19 +21,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
+
 import static com.example.tictectgame.R.color.colorforO;
 import static com.example.tictectgame.R.color.colorforX;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btn0,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8;
-    TextView player1,player2;
+    TextView player1,player2,draw;
     String pl1N = "",pl2N = "";
     int player_1 = 0,player_2 = 1,pl1 = 0,pl2 = 0;
+    int Draw = 0,count = 0;;
     int activeplayer = player_1;
     int[] filledpos = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
     boolean active = true;
-    private MediaPlayer mp,mp1;
+    private MediaPlayer mp,mp1,mp2;
 
 
     @Override
@@ -40,10 +46,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getSupportActionBar().setTitle("Tic Tec Toe");
 
+        mp1 = MediaPlayer.create(this,R.raw.winner);
+        mp = MediaPlayer.create(this,R.raw.clickbtn);
+        mp2 = MediaPlayer.create(this,R.raw.draw);
         pl1N = getIntent().getStringExtra("Py1");
         pl2N = getIntent().getStringExtra("Py2");
         player1 = findViewById(R.id.player1);
         player2 = findViewById(R.id.player2);
+        player1.setBackgroundColor(Color.parseColor("#E81AD3"));
+        draw = findViewById(R.id.draw);
         btn0 = findViewById(R.id.button_00);
         btn1 = findViewById(R.id.button_01);
         btn2 = findViewById(R.id.button_02);
@@ -56,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         player1.setText(pl1N+" (O) : 0");
         player2.setText(pl2N+" (X) : 0");
+        draw.setText("Draw : "+Draw);
 
         btn0.setOnClickListener(this);
         btn1.setOnClickListener(this);
@@ -73,8 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!active)
             return;
 
-        mp = MediaPlayer.create(this,R.raw.clickbtn);
-
         Button clickedbtn = findViewById(view.getId());
         int clickedtag = Integer.parseInt(view.getTag().toString());
 
@@ -86,14 +96,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(activeplayer == player_1){
             clickedbtn.setText("O");
             clickedbtn.setBackgroundColor(Color.parseColor("#E81AD3"));
-            player1.setBackgroundColor(Color.parseColor("#E81AD3"));
-            player2.setBackgroundColor(Color.parseColor("#000000"));
+            player2.setBackgroundColor(Color.parseColor("#60DA62"));
+            player1.setBackgroundColor(Color.parseColor("#000000"));
             activeplayer = player_2;
         }else{
             clickedbtn.setText("X");
             clickedbtn.setBackgroundColor(Color.parseColor("#60DA62"));
-            player2.setBackgroundColor(Color.parseColor("#60DA62"));
-            player1.setBackgroundColor(Color.parseColor("#000000"));
+            player1.setBackgroundColor(Color.parseColor("#E81AD3"));
+            player2.setBackgroundColor(Color.parseColor("#000000"));
             activeplayer = player_1;
         }
         checkWinner();
@@ -109,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(filledpos[val0] == filledpos[val1] && filledpos[val1] == filledpos[val2]){
                 if(filledpos[val0] != -1){
                     active = false;
-                    mp1 = MediaPlayer.create(this,R.raw.winner);
                     mp1.start();
                     if(filledpos[val0] == player_1) {
                         pl1 = pl1 + 1;
@@ -123,8 +132,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+        count = isIn();
+        if(count == 0) {
+            active = false;
+            mp2.start();
+            Draw = Draw + 1;
+            draw.setText("Draw : " + Draw);
+            dialog("Match Draw");
+        }
     }
 
+    //Match draw logic
+    private int isIn(){
+        int c = 0;
+        for(int x : filledpos){
+            if(x == -1){
+                c = c + 1;
+                break;
+            }
+        }
+        return c;
+    }
     //Dialog box for winner....
     private void dialog(String winner) {
        AlertDialog.Builder builder= new AlertDialog.Builder(this)
@@ -147,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activeplayer = player_1;
         active = true;
 
-        player1.setBackgroundColor(Color.parseColor("#000000"));
+        player1.setBackgroundColor(Color.parseColor("#E81AD3"));
         player2.setBackgroundColor(Color.parseColor("#000000"));
 
         btn0.setText("");
@@ -185,8 +213,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.reset :
                 pl2 = 0;
                 pl1 = 0;
+                Draw = 0;
                 player1.setText(pl1N+" (O) : "+pl1);
                 player2.setText(pl2N+" (X) : "+pl2);
+                draw.setText("Draw : "+Draw);
                 break;
             case R.id.resetgame :
                 restartgame();
@@ -199,6 +229,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.about_us :
                 Intent intent1 = new Intent(MainActivity.this,aboutus.class);
                 startActivity(intent1);
+                break;
+            case R.id.exit :
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Confirm Exit..!!")
+                        .setMessage("Are you sure You want to exit")
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                break;
+            case R.id.share :
+                ApplicationInfo api = getApplicationContext().getApplicationInfo();
+                String apkpath = api.sourceDir;
+                Intent intent2 = new Intent(Intent.ACTION_SEND);
+                intent2.setType("application/vnd.android.package-archive");
+                intent2.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(apkpath)));
+                startActivity(Intent.createChooser(intent2,"ShareVia"));
                 break;
         }
         return true;
